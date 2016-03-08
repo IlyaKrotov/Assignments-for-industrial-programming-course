@@ -7,9 +7,13 @@
 *		AnnaM
 */
 
-#include <Windows.h>
+//#include <Windows.h>
 #include <stdio.h>
 #include <assert.h>
+
+using namespace std;
+typedef unsigned UINT;
+typedef unsigned char UCHAR;
 
 enum PAGE_COLOR
 {
@@ -18,6 +22,7 @@ enum PAGE_COLOR
     PG_COLOR_RED,	/* page is actively used */
     PG_NUMBER_OF_COLORS                                                             /* Added, number of elements in enum */
 };
+
 
 
 /**
@@ -36,7 +41,7 @@ union PageKey
 
 
 /* Prepare from 2 chars the key of the same configuration as in PageKey */
-#define CALC_PAGE_KEY( Addr, Color )	(  (Color) + ( (Addr) << 8 ) )             /* Added, Priority of opperations */
+#define CALC_PAGE_KEY( Addr, Color )	(  (Color) + ( (UINT)(Addr) << 8 ) )             /* Added, Priority of opperations */
 
 
 /**
@@ -52,7 +57,7 @@ struct PageDesc
 
 #define PAGE_INIT( Desc, Addr, Color )              \
     do{                                             \
-        (Desc).uKey = CALC_PAGE_KEY( Addr, Color ); \
+        (Desc).uKey.uKey = CALC_PAGE_KEY( Addr, Color ); \
         (Desc).next = (Desc).prev = NULL;           \
     } while(0)                                                                    /* Added, 'do{} while(0)' */
 
@@ -69,7 +74,7 @@ PageDesc* PageFind( void* ptr, unsigned char color )
     assert(color < PG_NUMBER_OF_COLORS);/* Added, assert for color */
     
     for( PageDesc* Pg = PageStrg[color]; Pg; Pg = Pg->next )                      /* Added, don't need ';', [color]: char -> unsigned char(scalability) and color < number of colors */
-        if( Pg->uKey == CALC_PAGE_KEY((UINT)ptr,color) )                          /* Added, if 64-bit CALC_PAGE_KEY will be worked bad */
+        if( Pg->uKey.uKey == CALC_PAGE_KEY((UINT)ptr,color) )                          /* Added, if 64-bit CALC_PAGE_KEY will be worked bad */
            return Pg;                                                                                                                                     
     return NULL;
 }
@@ -104,9 +109,9 @@ PageDesc* PageInit( void* ptr, UINT color )
             printf("Allocation has failed\n");
         return pg;
     }
-    catch(bad_alloc)                                                              /* Added, exception */
+    catch(std::bad_alloc& error)                                                              /* Added, exception */
     {
-        cerr << "Bad allocation" << endl;
+        std::cerr << "Bad allocation" ;
         return NULL;
     }
 
@@ -133,10 +138,10 @@ void PageDump()
         printf("PgStrg[(%s) %u] ********** \n", PgColorName[color], color );    /* Changed: wrong order */
         for( PageDesc* Pg = PageStrg[color++]; Pg != NULL; Pg = Pg->next )      /* Changed: ++ should be postfix */
 		{
-            if( Pg->uAddr == NULL )                                             /* Changed: == */
+            if( Pg->uKey.cAddr == 0 )                                             /* Changed: == */
                 continue;
 
-			printf("Pg :Key = 0x%x, addr %p\n", Pg->uKey, Pg->uAddr );
+			printf("Pg :Key = 0x%x, addr %p\n", Pg->uKey.uKey, Pg->uKey.cAddr);
 		}
 	}
 	#undef PG_COLOR_NAME

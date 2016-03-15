@@ -1,0 +1,8 @@
+ERROR: information about error
+FATAL: fatality
+0   a.out                               0x00000001033dd245 _ZN6Logger20logger_write_messageE7Message + 1221
+1   a.out                               0x00000001033dd785 _Z9test_func7Messagei + 117
+2   a.out                               0x00000001033e3e60 _ZNSt3__114__thread_proxyINS_5tupleIJPFv7MessageiES2_iEEEEEPvS6_ + 560
+3   libsystem_pthread.dylib             0x00007fff9401cc13 _pthread_body + 131
+4   libsystem_pthread.dylib             0x00007fff9401cb90 _pthread_body + 0
+5   libsystem_pthread.dylib             0x00007fff9401a375 thread_start + 13

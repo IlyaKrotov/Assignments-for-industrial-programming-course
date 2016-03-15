@@ -11,7 +11,6 @@
 
 #define BUFF_SIZE 1024
 #define CALL_STACK_SIZE 256
-#define DEFAULT_LOGG_FILE "logg_file.txt"
 
 #define LOGGER_INIT(log_lvl, file_name) Logger::logger_init(log_lvl, file_name)
 #define LOGGER_WRITE(msg) Logger::logger_write_message(msg)
@@ -54,7 +53,7 @@ class Logger {
 	static string file_for_write;
 public:
 	//Initialization func
-	static bool logger_init(log_option default_log_level, string file_name = DEFAULT_LOGG_FILE);
+	static bool logger_init(log_option default_log_level, string file_name);
 	//This function write the message to the buffer, when the buffer becomes full
 	//it is written to the file
 	static bool logger_write_message(log_message message = default_log_message);
@@ -69,7 +68,7 @@ ofstream Logger::file_out_stream;
 circular_buff Logger::cir_buff;
 void *backtrace_buffer[CALL_STACK_SIZE];
 log_option Logger::default_log_level = INFO;
-string Logger::file_for_write = DEFAULT_LOGG_FILE;
+string Logger::file_for_write;
 
 //mutex init
 mutex buff_locker;

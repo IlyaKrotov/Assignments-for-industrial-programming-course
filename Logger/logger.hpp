@@ -135,7 +135,7 @@ bool Logger::logger_write_message(log_message message) {
 			for (int j = 0; j < nptrs; j++) {
 				file_out_stream << strings[j] << endl;
 			}
-            buff_locker.unlock();
+			buff_locker.unlock();
 
             cerr << "There is fatal error! Program termination." << endl;
 

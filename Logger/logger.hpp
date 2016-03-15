@@ -133,8 +133,8 @@ bool Logger::logger_write_message(log_message message) {
 			//write the call stack to file
 			file_out_stream << log_option_message[message.option] + message.error_description << endl;
 			for (int j = 0; j < nptrs; j++) {
-            	file_out_stream << strings[j] << endl;
-            }
+				file_out_stream << strings[j] << endl;
+			}
             buff_locker.unlock();
 
             cerr << "There is fatal error! Program termination." << endl;

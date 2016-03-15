@@ -9,7 +9,7 @@
 #include <mutex>
 #include <cstdlib>
 
-#define BUFF_SIZE 4
+#define BUFF_SIZE 1024
 #define CALL_STACK_SIZE 256
 #define DEFAULT_LOGG_FILE "logg_file.txt"
 
@@ -132,8 +132,9 @@ bool Logger::logger_write_message(log_message message) {
 
 			//write the call stack to file
 			file_out_stream << log_option_message[message.option] + message.error_description << endl;
-			for (int j = 0; j < nptrs; j++) 
+			for (int j = 0; j < nptrs; j++) {
             	file_out_stream << strings[j] << endl;
+            }
             buff_locker.unlock();
 
             cerr << "There is fatal error! Program termination." << endl;

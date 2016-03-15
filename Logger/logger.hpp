@@ -137,10 +137,10 @@ bool Logger::logger_write_message(log_message message) {
 			}
 			buff_locker.unlock();
 
-            cerr << "There is fatal error! Program termination." << endl;
+			cerr << "There is fatal error! Program termination." << endl;
 
-            //It is fatal error, so we exit with failure
-            exit(EXIT_FAILURE);
+			//It is fatal error, so we exit with failure
+			exit(EXIT_FAILURE);
 		} else if (message.option >= default_log_level){
 			buff_locker.lock();
 			//if the circular buffer is full, write all information to file
